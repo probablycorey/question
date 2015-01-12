@@ -3,36 +3,31 @@
 require 'bundler/setup'
 require 'colorize'
 require 'readline'
+require 'tempfile'
 
-LIST = [
-  'corey', 'awesome'
-]
+tmp_file = Tempfile.new('hello')
 
-class Interrogate
-  def initialize
-    @output = $stdout
-  end
+Readline.output = File.open(tmp_file, "w+")
 
-  def say(statement)
-    @output.print(statement)
-  end
-
-  def ask(question)
-    question = "? ".cyan + question + ": "
-    answer = Readline.readline(question, true)
-    puts answer.strip
-  end
-
-  def list(question)
-    question = "? ".cyan + question + ": "
-    while buf = Readline.readline(question)
-      puts buf
+count = 0
+Thread.new do
+  input = open(tmp_file, "r+")
+  while true
+    character = input.getc
+    if character == "!"
+      count += 1
+      $stdout.write(character)
+      $stdout.flush
     end
   end
 end
-# Charm.prototype.cursor = function (visible) {
-#   this.write(encode(visible ? '[?25h' : '[?25l'));
-#   return this;
-#   };
 
-Interrogate.new.list('What is my name')
+begin
+  while line = Readline.readline("", true)
+    count = 0
+    $stdout.write(count)
+    $stdout.flush
+  end
+rescue EOFError
+  puts "Exiting..."
+end
