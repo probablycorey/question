@@ -26,12 +26,12 @@ end
 OUTPUT = $stdout
 INPUT = $stdin
 
-def get_input()
-  input = INPUT.getch()
+def get_input
+  input = INPUT.getch
   if input == "\e"
-    Timeout::timeout(1) do
-      input += INPUT.getch()
-      input += INPUT.getch()
+    Timeout.timeout(0.01) do
+      input += INPUT.getch
+      input += INPUT.getch
     end
   end
   input
@@ -54,8 +54,7 @@ def ask(question)
 
   hide_cursor do
     loop do
-      input = get_input()
-      OUTPUT.puts input.chars.length
+      input = get_input
       case input
       when KEYS::SIGINT
         exit 130
