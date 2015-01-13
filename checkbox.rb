@@ -2,114 +2,80 @@ require 'colorize'
 require 'io/console'
 require 'timeout'
 
-module ESCAPE_CODE
-  SPACE = " "
-  TAB = "\t"
-  RETURN = "\r"
-  LINEFEED = "\n"
-  ESCAPE = "\e"
-  UP = "\e[A"
-  DOWN = "\e[B"
-  RIGHT = "\e[C"
-  LEFT = "\e[D"
-  BACKSPACE = "\177"
-  SIGINT = "\003"
-
-  HIDE = "\e[?25l"
-  SHOW = "\e[?25h"
-  CLEAR_DOWN = "\e[0J"
-  SAVE = "\e7"
-  RESTORE = "\e8"
-end
-
-module UI
-  SELECTED = "‣"
-  UNSELECTED = " "
-  CHECKBOX_CHECKED = "⬢"
-  CHECKBOX_UNCHECKED = "⬡"
-end
+require_relative("./tty")
 
 class Checkbox
   def initialize(question, choices)
     @question = question
     @choices = choices
-    @selected_index = 0
-    @result = []
+    @active_index = 0
+    @selected_choices = []
     @finished = false
+    @modified = false
   end
 
   def ask
-    print ESCAPE_CODE::SAVE
-    choose
-    @result
-  end
-
-  def choose()
-    begin
-      sync_value = $stdout.sync
-      $stdout.sync = true
-      $stdout.print ESCAPE_CODE::HIDE
-
+    TTY.interactive do
       while !@finished
         render
         handle_input
       end
-    ensure
-      $stdout.print ESCAPE_CODE::SHOW
-      $stdout.sync = sync_value
+      render # render the results a final time and clear the screen
     end
+
+    @selected_choices
   end
 
   def handle_input
-    case input
-    when ESCAPE_CODE::SIGINT
+    case TTY.input
+    when TTY::CODE::SIGINT
       exit 130
-    when ESCAPE_CODE::RETURN
+    when TTY::CODE::RETURN
       @finished = true
-    when ESCAPE_CODE::DOWN
-      @selected_index += 1
-      @selected_index = 0 if @selected_index >= @choices.length
-    when ESCAPE_CODE::UP
-      @selected_index -= 1
-      @selected_index = @choices.length - 1 if @selected_index < 0
-    when ESCAPE_CODE::SPACE
-      selected_choice = @choices[@selected_index]
-      if @result.include? selected_choice
-        @result.delete(selected_choice)
+    when TTY::CODE::DOWN
+      @active_index += 1
+      @active_index = 0 if @active_index >= @choices.length
+    when TTY::CODE::UP
+      @active_index -= 1
+      @active_index = @choices.length - 1 if @active_index < 0
+    when TTY::CODE::SPACE
+      @modified = true
+      active_choice = @choices[@active_index]
+      if @selected_choices.include? active_choice
+        @selected_choices.delete(active_choice)
       else
-        @result.push(selected_choice)
+        @selected_choices.push(active_choice)
       end
     end
+  end
+
+  def instructions
+    "(Use <space>, <up>, <down> – Press <enter> when finished)"
   end
 
   def render
-    clear
-    puts @question
-    @choices.each_with_index do |choice, index|
-      print index == @selected_index ? UI::SELECTED : UI::UNSELECTED
-      print " "
-      print @result.include?(choice) ? UI::CHECKBOX_CHECKED : UI::CHECKBOX_UNCHECKED
-      print "  "
-      print choice[:label]
-      print "\n"
+    TTY.clear
+    print "? ".colorize(:cyan)
+    print @question
+    print ": "
+    if @finished
+      print @selected_choices.map { |choice| choice[:label] }.join(", ").colorize(:green)
+    elsif @modified
+      print @selected_choices.map { |choice| choice[:label] }.join(", ")
+    else
+      print instructions.colorize(:light_white)
     end
-  end
+    print "\n"
 
-  def clear
-    print ESCAPE_CODE::RESTORE
-    print ESCAPE_CODE::CLEAR_DOWN
-  end
-
-  def input
-    input = $stdin.getch
-    return input unless input == "\e"
-    begin
-      Timeout.timeout(0.01) do
-        input += $stdin.getch
-        input += $stdin.getch
+    unless @finished
+      @choices.each_with_index do |choice, index|
+        print index == @active_index ? TTY::UI::SELECTED : TTY::UI::UNSELECTED
+        print " "
+        print @selected_choices.include?(choice) ? TTY::UI::CHECKBOX_CHECKED : TTY::UI::CHECKBOX_UNCHECKED
+        print "  "
+        print choice[:label]
+        print "\n"
       end
-    rescue Timeout::Error
     end
-    input
   end
 end
