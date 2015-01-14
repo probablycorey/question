@@ -48,12 +48,12 @@ module Interrogate
     end
 
     def self.input
-      input = IN.getch
+      input = $stdin.getch
       return input unless input == "\e"
       begin
         Timeout.timeout(0.01) do
-          input += IN.getch
-          input += IN.getch
+          input += $stdin.getch
+          input += $stdin.getch
         end
       rescue Timeout::Error
       end
