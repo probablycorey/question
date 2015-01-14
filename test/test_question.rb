@@ -21,7 +21,7 @@ describe Question do
       ]
       input_proc = Proc.new { input.shift }
 
-      result = Question::IN.stub :getch, input_proc do
+      result = $stdin.stub :getch, input_proc do
         question = Question::CheckboxList.new(message, choices)
         question.ask()
       end
