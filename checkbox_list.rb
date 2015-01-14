@@ -65,7 +65,11 @@ class CheckboxList
       @choices.each_with_index do |choice, index|
         print index == @active_index ? TTY::UI::SELECTED : TTY::UI::UNSELECTED
         print " "
-        print @selected_choices.include?(choice) ? TTY::UI::CHECKBOX_CHECKED : TTY::UI::CHECKBOX_UNCHECKED
+        if @selected_choices.include?(choice)
+          print TTY::UI::CHECKBOX_CHECKED.colorize(:green)
+        else
+          print TTY::UI::CHECKBOX_UNCHECKED.colorize(:red)
+        end
         print "  "
         print choice[:label]
         print "\n"
