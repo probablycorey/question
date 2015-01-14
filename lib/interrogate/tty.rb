@@ -34,10 +34,10 @@ module Interrogate
         print TTY::CODE::SAVE
         sync_value = $stdout.sync
         $stdout.sync = true
-        $stdout.print TTY::CODE::HIDE
+        print TTY::CODE::HIDE
         block.call
       ensure
-        $stdout.print TTY::CODE::SHOW
+        print TTY::CODE::SHOW
         $stdout.sync = sync_value
       end
     end
@@ -48,12 +48,12 @@ module Interrogate
     end
 
     def self.input
-      input = $stdin.getch
+      input = IN.getch
       return input unless input == "\e"
       begin
         Timeout.timeout(0.01) do
-          input += $stdin.getch
-          input += $stdin.getch
+          input += IN.getch
+          input += IN.getch
         end
       rescue Timeout::Error
       end

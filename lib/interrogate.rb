@@ -14,4 +14,6 @@ require "interrogate/password"
 require "interrogate/confirm"
 
 module Interrogate
+  IN ||= $stdin
+  OUT ||= $stdout
 end
