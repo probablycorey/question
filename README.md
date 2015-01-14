@@ -1,6 +1,6 @@
 # Interrogate
 
-TODO: Write a gem description
+![https://s3.amazonaws.com/f.cl.ly/items/2K3w1Y0F2T2o1505191J/Image%202015-01-14%20at%2012.35.04%20PM.png](https://s3.amazonaws.com/f.cl.ly/items/2K3w1Y0F2T2o1505191J/Image%202015-01-14%20at%2012.35.04%20PM.png)
 
 ## Installation
 
@@ -20,12 +20,4 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
-
-## Contributing
-
-1. Fork it ( https://github.com/[my-github-username]/interrogate/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+See `examples/example.rb`
