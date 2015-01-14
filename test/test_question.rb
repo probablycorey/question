@@ -1,6 +1,6 @@
 require 'minitest_helper'
 
-describe Interrogate do
+describe Question do
   describe "CheckboxList" do
     it "returns checked choices" do
 
@@ -13,16 +13,16 @@ describe Interrogate do
 
       # Fake input
       input = [
-        Interrogate::TTY::CODE::UP,
-        Interrogate::TTY::CODE::SPACE,
-        Interrogate::TTY::CODE::DOWN,
-        Interrogate::TTY::CODE::SPACE,
-        Interrogate::TTY::CODE::RETURN
+        Question::TTY::CODE::UP,
+        Question::TTY::CODE::SPACE,
+        Question::TTY::CODE::DOWN,
+        Question::TTY::CODE::SPACE,
+        Question::TTY::CODE::RETURN
       ]
       input_proc = Proc.new { input.shift }
 
-      result = Interrogate::IN.stub :getch, input_proc do
-        question = Interrogate::CheckboxList.new(message, choices)
+      result = Question::IN.stub :getch, input_proc do
+        question = Question::CheckboxList.new(message, choices)
         question.ask()
       end
 

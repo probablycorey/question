@@ -1,4 +1,4 @@
-module Interrogate
+module Question
   class Password
     def initialize(question)
       @question = question

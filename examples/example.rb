@@ -1,6 +1,6 @@
 require "pp"
 
-require "interrogate"
+require "question"
 
 choices = [
   { label: "red", value: {r: 255, g: 0, b: 0} },
@@ -8,17 +8,17 @@ choices = [
   { label: "green", value: "green" }
 ]
 
-question = Interrogate::CheckboxList.new("What colors do you like", choices, default: choices[1..-1])
+question = Question::CheckboxList.new("What colors do you like", choices, default: choices[1..-1])
 pp question.ask
 
-question = Interrogate::List.new("What is your FAVORITE color", choices)
+question = Question::List.new("What is your FAVORITE color", choices)
 pp question.ask
 
-question = Interrogate::Input.new("What is your name?", default: ENV["USER"])
+question = Question::Input.new("What is your name?", default: ENV["USER"])
 pp question.ask
 
-question = Interrogate::Password.new("Enter something secret")
+question = Question::Password.new("Enter something secret")
 pp question.ask
 
-question = Interrogate::Confirm.new("Do you understand")
+question = Question::Confirm.new("Do you understand")
 pp question.ask

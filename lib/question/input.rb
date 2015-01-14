@@ -1,6 +1,6 @@
-module Interrogate
-  class Confirm
-    def initialize(question, default:true)
+module Question
+  class Input
+    def initialize(question, default:nil)
       @question = question
       @finished = false
       @default = default
@@ -10,24 +10,13 @@ module Interrogate
     def ask
       print TTY::CODE::SAVE
       question = colorized_question
-      if @default
-        question += "(Y/n) ".colorize(:light_white)
-      else
-        question += "(y/N) ".colorize(:light_white)
-      end
+      question += "(#{@default}) ".colorize(:light_white) if @default
 
       # Use readline so keyboard shortcuts like alt-backspace work
       @answer = Readline.readline(question, true)
-      @answer = if @answer =~ /^y/i
-        true
-      elsif @answer =~ /^n/i
-        false
-      else
-        @default
-      end
+      @answer = @default if @default && @answer.length == 0
 
       render
-
       @answer
     rescue Interrupt
       exit 1
@@ -36,7 +25,7 @@ module Interrogate
     def render
       TTY.clear
       print colorized_question
-      print (@answer ? "Yes" : "No").colorize(:blue)
+      print @answer.colorize(:blue)
       print "\n"
     end
 

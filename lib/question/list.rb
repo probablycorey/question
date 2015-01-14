@@ -1,4 +1,4 @@
-module Interrogate
+module Question
   class List
     def initialize(question, choices)
       @question = question

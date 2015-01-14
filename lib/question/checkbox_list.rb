@@ -1,4 +1,4 @@
-module Interrogate
+module Question
   class CheckboxList
     def initialize(question, choices, default: nil)
       @question = question

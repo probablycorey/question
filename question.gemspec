@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'interrogate/version'
+require 'question/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "interrogate"
-  spec.version       = Interrogate::VERSION
+  spec.name          = "question"
+  spec.version       = Question::VERSION
   spec.authors       = ["probablycorey"]
   spec.email         = ["probablycorey@gmail.com"]
   spec.summary       = %q{Interactive command line UI.}
   spec.description   = %q{Inspired by Inquirer.js}
-  spec.homepage      = "https://github.com/probablycorey/interrogate"
+  spec.homepage      = "https://github.com/probablycorey/question"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

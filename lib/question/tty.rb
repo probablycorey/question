@@ -1,4 +1,4 @@
-module Interrogate
+module Question
   class TTY
     module CODE
       SPACE = " "
