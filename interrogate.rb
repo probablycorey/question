@@ -12,6 +12,7 @@ require_relative "./checkbox_list"
 require_relative "./list"
 require_relative "./input"
 require_relative "./password"
+require_relative "./confirm"
 
 choices = [
   { label: "good", value: 1 },
@@ -31,4 +32,6 @@ question = CheckboxList.new("How are you", choices)
 question = List.new("How are you", choices)
 question = Input.new("How are you")
 question = Password.new("How are you")
+question = Confirm.new("How are you")
+
 pp question.ask
