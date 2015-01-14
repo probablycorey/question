@@ -1,9 +1,9 @@
 class CheckboxList
-  def initialize(question, choices)
+  def initialize(question, choices, default:)
     @question = question
     @choices = choices
     @active_index = 0
-    @selected_choices = []
+    @selected_choices = default || []
     @finished = false
     @modified = false
   end
