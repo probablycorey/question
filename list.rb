@@ -1,11 +1,9 @@
-class Checkbox
+class List
   def initialize(question, choices)
     @question = question
     @choices = choices
     @active_index = 0
-    @selected_choices = []
     @finished = false
-    @modified = false
   end
 
   def ask
@@ -17,14 +15,14 @@ class Checkbox
       render # render the results a final time and clear the screen
     end
 
-    @selected_choices
+    @choices[@active_index]
   end
 
   def handle_input
     case TTY.input
     when TTY::CODE::SIGINT
       exit 130
-    when TTY::CODE::RETURN
+    when TTY::CODE::RETURN, TTY::CODE::SPACE
       @finished = true
     when TTY::CODE::DOWN
       @active_index += 1
@@ -32,19 +30,11 @@ class Checkbox
     when TTY::CODE::UP
       @active_index -= 1
       @active_index = @choices.length - 1 if @active_index < 0
-    when TTY::CODE::SPACE
-      @modified = true
-      active_choice = @choices[@active_index]
-      if @selected_choices.include? active_choice
-        @selected_choices.delete(active_choice)
-      else
-        @selected_choices.push(active_choice)
-      end
     end
   end
 
   def instructions
-    "(Use <space>, <up>, <down> – Press <enter> when finished)"
+    "(Press <enter> when to make selection)"
   end
 
   def render
@@ -53,9 +43,7 @@ class Checkbox
     print @question
     print ": "
     if @finished
-      print @selected_choices.map { |choice| choice[:label] }.join(", ").colorize(:green)
-    elsif @modified
-      print @selected_choices.map { |choice| choice[:label] }.join(", ")
+      print @choices[@active_index][:label].colorize(:green)
     else
       print instructions.colorize(:light_white)
     end
@@ -65,8 +53,6 @@ class Checkbox
       @choices.each_with_index do |choice, index|
         print index == @active_index ? TTY::UI::SELECTED : TTY::UI::UNSELECTED
         print " "
-        print @selected_choices.include?(choice) ? TTY::UI::CHECKBOX_CHECKED : TTY::UI::CHECKBOX_UNCHECKED
-        print "  "
         print choice[:label]
         print "\n"
       end

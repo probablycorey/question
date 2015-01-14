@@ -8,8 +8,8 @@ require "timeout"
 require "colorize"
 
 require_relative "./tty"
-require_relative "./checkbox"
-require_relative "./radio"
+require_relative "./checkbox_list"
+require_relative "./list"
 require_relative "./input"
 require_relative "./password"
 
@@ -27,8 +27,8 @@ choices = [
   { label: "horrible", value: -1 }
 ]
 
-question = Checkbox.new("How are you", choices)
-question = Radio.new("How are you", choices)
+question = CheckboxList.new("How are you", choices)
+question = List.new("How are you", choices)
 question = Input.new("How are you")
 question = Password.new("How are you")
 pp question.ask

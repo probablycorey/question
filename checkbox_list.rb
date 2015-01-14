@@ -1,9 +1,11 @@
-class Radio
+class CheckboxList
   def initialize(question, choices)
     @question = question
     @choices = choices
     @active_index = 0
+    @selected_choices = []
     @finished = false
+    @modified = false
   end
 
   def ask
@@ -15,14 +17,14 @@ class Radio
       render # render the results a final time and clear the screen
     end
 
-    @choices[@active_index]
+    @selected_choices
   end
 
   def handle_input
     case TTY.input
     when TTY::CODE::SIGINT
       exit 130
-    when TTY::CODE::RETURN, TTY::CODE::SPACE
+    when TTY::CODE::RETURN
       @finished = true
     when TTY::CODE::DOWN
       @active_index += 1
@@ -30,11 +32,19 @@ class Radio
     when TTY::CODE::UP
       @active_index -= 1
       @active_index = @choices.length - 1 if @active_index < 0
+    when TTY::CODE::SPACE
+      @modified = true
+      active_choice = @choices[@active_index]
+      if @selected_choices.include? active_choice
+        @selected_choices.delete(active_choice)
+      else
+        @selected_choices.push(active_choice)
+      end
     end
   end
 
   def instructions
-    "(Press <enter> when to make selection)"
+    "(Use <space>, <up>, <down> – Press <enter> when finished)"
   end
 
   def render
@@ -43,7 +53,9 @@ class Radio
     print @question
     print ": "
     if @finished
-      print @choices[@active_index][:label].colorize(:green)
+      print @selected_choices.map { |choice| choice[:label] }.join(", ").colorize(:green)
+    elsif @modified
+      print @selected_choices.map { |choice| choice[:label] }.join(", ")
     else
       print instructions.colorize(:light_white)
     end
@@ -53,6 +65,8 @@ class Radio
       @choices.each_with_index do |choice, index|
         print index == @active_index ? TTY::UI::SELECTED : TTY::UI::UNSELECTED
         print " "
+        print @selected_choices.include?(choice) ? TTY::UI::CHECKBOX_CHECKED : TTY::UI::CHECKBOX_UNCHECKED
+        print "  "
         print choice[:label]
         print "\n"
       end
