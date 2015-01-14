@@ -10,6 +10,8 @@ class Input
     print TTY::CODE::SAVE
     question = colorized_question
     question += "(#{@default}) ".colorize(:light_white) if @default
+
+    # Use readline so keyboard shortcuts like alt-backspace work
     @answer = Readline.readline(question, true)
     @answer = @default if @default && @answer.length == 0
 

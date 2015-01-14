@@ -9,7 +9,8 @@ class TTY
     DOWN = "\e[B"
     RIGHT = "\e[C"
     LEFT = "\e[D"
-    BACKSPACE = "\177"
+    BACKSPACE = "\b"
+    DELETE = "\e[3"
     SIGINT = "\003"
 
     HIDE = "\e[?25l"
@@ -20,6 +21,7 @@ class TTY
   end
 
   module UI
+    SECURE = "•"
     SELECTED = "‣"
     UNSELECTED = " "
     CHECKBOX_CHECKED = "⬢"
