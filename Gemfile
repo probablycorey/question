@@ -1,3 +1,4 @@
 source 'https://rubygems.org'
 
-gem 'colorize'
+# Specify your gem's dependencies in interrogate.gemspec
+gemspec

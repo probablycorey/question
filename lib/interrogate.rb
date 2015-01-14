@@ -1,4 +1,3 @@
-require "bundler/setup"
 
 require "io/console"
 require "pp"
@@ -7,12 +6,13 @@ require "timeout"
 
 require "colorize"
 
-require_relative "./tty"
-require_relative "./checkbox_list"
-require_relative "./list"
-require_relative "./input"
-require_relative "./password"
-require_relative "./confirm"
+require "interrogate/version"
+require "interrogate/tty"
+require "interrogate/checkbox_list"
+require "interrogate/list"
+require "interrogate/input"
+require "interrogate/password"
+require "interrogate/confirm"
 
 choices = [
   { label: "good", value: 1 },
