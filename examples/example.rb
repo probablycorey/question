@@ -4,10 +4,10 @@ choices = [
   { label: "horrible", value: -1 }
 ]
 
-question = CheckboxList.new("How are you", choices, default: choices[1..-1])
-# question = List.new("How are you", choices)
-# question = Input.new("How are you")
-# question = Password.new("How are you")
-# question = Confirm.new("How are you")
+question = Interrogate::CheckboxList.new("How are you", choices, default: choices[1..-1])
+# question = Interrogate::List.new("How are you", choices)
+# question = Interrogate::Input.new("How are you")
+# question = Interrogate::Password.new("How are you")
+# question = Interrogate::Confirm.new("How are you")
 
 pp question.ask
