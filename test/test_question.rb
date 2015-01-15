@@ -15,10 +15,12 @@ describe Question do
         Question::TTY::CODE::SPACE,
         Question::TTY::CODE::DOWN,
         Question::TTY::CODE::SPACE,
+        Question::TTY::CODE::DOWN,
+        Question::TTY::CODE::SPACE,
         Question::TTY::CODE::RETURN
       ]
       result = fake_input(input) do
-        question = Question::CheckboxList.new(message, choices)
+        question = Question::CheckboxList.new(message, choices, default: [0])
         question.ask()
       end
 

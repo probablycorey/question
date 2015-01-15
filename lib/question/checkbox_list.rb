@@ -1,12 +1,16 @@
 module Question
   class CheckboxList
-    def initialize(question, choices, default: nil)
+    def initialize(question, choices, default: [])
       @question = question
       @choices = choices
       @active_index = 0
-      @selected_choices = default || []
       @finished = false
       @modified = false
+
+      default_values = default.map { |choice| value_for_choice(choice) }
+      @selected_choices = choices.select do |choice|
+        default_values.include? value_for_choice(choice)
+      end
     end
 
     def label_for_choice(choice)
