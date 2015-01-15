@@ -34,15 +34,16 @@ module Question
     end
 
     def handle_input
-      case TTY.input
+      input = TTY.input
+      case input
       when TTY::CODE::SIGINT
         exit 130
       when TTY::CODE::RETURN
         @finished = true
-      when TTY::CODE::DOWN
+      when TTY::CODE::DOWN, TTY::CODE::CTRL_J, TTY::CODE::CTRL_N
         @active_index += 1
         @active_index = 0 if @active_index >= @choices.length
-      when TTY::CODE::UP
+      when TTY::CODE::UP, TTY::CODE::CTRL_K, TTY::CODE::CTRL_P
         @active_index -= 1
         @active_index = @choices.length - 1 if @active_index < 0
       when TTY::CODE::SPACE
