@@ -19,10 +19,7 @@ describe Question do
         Question::TTY::CODE::SPACE,
         Question::TTY::CODE::RETURN
       ]
-      result = fake_input(input) do
-        question = Question::CheckboxList.new(message, choices, default: [0])
-        question.ask()
-      end
+      result = fake_input(input) { Question.checkbox_list(message, choices, default: [0]) }
 
       assert_equal result, [
         "horrible",
@@ -44,10 +41,7 @@ describe Question do
       choices.each_with_index do |choice, index|
         input = [Question::TTY::CODE::RETURN]
         index.times { input.unshift Question::TTY::CODE::DOWN }
-        result = fake_input(input) do
-          question = Question::List.new(message, choices)
-          question.ask()
-        end
+        result = fake_input(input) { Question.list(message, choices) }
         assert_equal result, choice
       end
     end
