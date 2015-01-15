@@ -3,33 +3,47 @@ require 'minitest_helper'
 describe Question do
   describe "CheckboxList" do
     it "returns checked choices" do
-
       message = "How are you feeling"
       choices = [
         { label: "good", value: {sub: 1} },
         { label: "neutral", value: 0 },
-        { label: "horrible", value: [1,2,3] }
+        "horrible"
       ]
 
-      # Fake input
       input = [
         Question::TTY::CODE::UP,
         Question::TTY::CODE::SPACE,
         Question::TTY::CODE::DOWN,
         Question::TTY::CODE::SPACE,
+        Question::TTY::CODE::DOWN,
+        Question::TTY::CODE::SPACE,
         Question::TTY::CODE::RETURN
       ]
-      input_proc = Proc.new { input.shift }
-
-      result = $stdin.stub :getch, input_proc do
-        question = Question::CheckboxList.new(message, choices)
-        question.ask()
-      end
+      result = fake_input(input) { Question.checkbox_list(message, choices, default: [0]) }
 
       assert_equal result, [
-        { label: "horrible", value: [1,2,3] },
-        { label: "good", value: {sub: 1} }
+        "horrible",
+        {sub: 1}
       ]
+    end
+  end
+
+  describe "List" do
+    it "returns checked choices" do
+
+      message = "How are you feeling"
+      choices = [
+        { label: "good", value: {sub: 1} },
+        { label: "neutral", value: 0 },
+        "horrible"
+      ]
+
+      choices.each_with_index do |choice, index|
+        input = [Question::TTY::CODE::RETURN]
+        index.times { input.unshift Question::TTY::CODE::DOWN }
+        result = fake_input(input) { Question.list(message, choices) }
+        assert_equal result, choice.is_a?(Hash) ? choice[:value] : choice
+      end
     end
   end
 end

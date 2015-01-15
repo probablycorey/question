@@ -7,16 +7,24 @@ module Question
       @finished = false
     end
 
+    def label_for_choice(choice)
+      choice.is_a?(Hash) ? choice[:label] : choice
+    end
+
+    def value_for_choice(choice)
+      choice.is_a?(Hash) ? choice[:value] : choice
+    end
+
     def ask
       TTY.interactive do
         while !@finished
           render
           handle_input
         end
-        render # render the results a final time and clear the screen
+        render
       end
 
-      @choices[@active_index]
+      value_for_choice(@choices[@active_index])
     end
 
     def handle_input
@@ -35,26 +43,30 @@ module Question
     end
 
     def instructions
-      "(Press <enter> when to make selection)"
+      "(Press <enter> to select item)"
     end
 
     def render
       TTY.clear
-      print "? ".colorize(:cyan)
+      print "? ".cyan
       print @question
       print ": "
       if @finished
-        print @choices[@active_index][:label].colorize(:green)
+        print label_for_choice(@choices[@active_index]).green
       else
-        print instructions.colorize(:light_white)
+        print instructions.light_black
       end
       print "\n"
 
       unless @finished
         @choices.each_with_index do |choice, index|
-          print index == @active_index ? TTY::UI::SELECTED : TTY::UI::UNSELECTED
+          print index == @active_index ? TTY::UI::SELECTED.green : TTY::UI::UNSELECTED
           print " "
-          print choice[:label]
+          if index == @active_index
+            print label_for_choice(choice).green
+          else
+            print label_for_choice(choice)
+          end
           print "\n"
         end
       end

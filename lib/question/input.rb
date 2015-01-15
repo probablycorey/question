@@ -10,7 +10,7 @@ module Question
     def ask
       print TTY::CODE::SAVE
       question = colorized_question
-      question += "(#{@default}) ".colorize(:light_white) if @default
+      question += "(#{@default}) ".light_white if @default
 
       # Use readline so keyboard shortcuts like alt-backspace work
       @answer = Readline.readline(question, true)
@@ -25,12 +25,12 @@ module Question
     def render
       TTY.clear
       print colorized_question
-      print @answer.colorize(:blue)
+      print @answer.green
       print "\n"
     end
 
     def colorized_question
-      colorized_question = "? ".colorize(:cyan)
+      colorized_question = "? ".cyan
       colorized_question += @question
       colorized_question += ": "
     end

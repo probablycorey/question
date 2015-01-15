@@ -1,12 +1,24 @@
 module Question
   class CheckboxList
-    def initialize(question, choices, default: nil)
+    def initialize(question, choices, default: [])
       @question = question
       @choices = choices
       @active_index = 0
-      @selected_choices = default || []
       @finished = false
       @modified = false
+
+      default_values = default.map { |choice| value_for_choice(choice) }
+      @selected_choices = choices.select do |choice|
+        default_values.include? value_for_choice(choice)
+      end
+    end
+
+    def label_for_choice(choice)
+      choice.is_a?(Hash) ? choice[:label] : choice
+    end
+
+    def value_for_choice(choice)
+      choice.is_a?(Hash) ? choice[:value] : choice
     end
 
     def ask
@@ -18,19 +30,20 @@ module Question
         render # render the results a final time and clear the screen
       end
 
-      @selected_choices
+      @selected_choices.map { |choice| value_for_choice(choice) }
     end
 
     def handle_input
-      case TTY.input
+      input = TTY.input
+      case input
       when TTY::CODE::SIGINT
         exit 130
       when TTY::CODE::RETURN
         @finished = true
-      when TTY::CODE::DOWN
+      when TTY::CODE::DOWN, TTY::CODE::CTRL_J, TTY::CODE::CTRL_N
         @active_index += 1
         @active_index = 0 if @active_index >= @choices.length
-      when TTY::CODE::UP
+      when TTY::CODE::UP, TTY::CODE::CTRL_K, TTY::CODE::CTRL_P
         @active_index -= 1
         @active_index = @choices.length - 1 if @active_index < 0
       when TTY::CODE::SPACE
@@ -50,15 +63,15 @@ module Question
 
     def render
       TTY.clear
-      print "? ".colorize(:cyan)
+      print "? ".cyan
       print @question
       print ": "
       if @finished
-        print @selected_choices.map { |choice| choice[:label] }.join(", ").colorize(:green)
+        print @selected_choices.map { |choice| label_for_choice(choice) }.join(", ").green
       elsif @modified
-        print @selected_choices.map { |choice| choice[:label] }.join(", ")
+        print @selected_choices.map { |choice| label_for_choice(choice) }.join(", ")
       else
-        print instructions.colorize(:light_white)
+        print instructions.light_white
       end
       print "\n"
 
@@ -67,12 +80,12 @@ module Question
           print index == @active_index ? TTY::UI::SELECTED : TTY::UI::UNSELECTED
           print " "
           if @selected_choices.include?(choice)
-            print TTY::UI::CHECKBOX_CHECKED.colorize(:green)
+            print TTY::UI::CHECKBOX_CHECKED.green
           else
-            print TTY::UI::CHECKBOX_UNCHECKED.colorize(:red)
+            print TTY::UI::CHECKBOX_UNCHECKED.red
           end
           print "  "
-          print choice[:label]
+          print label_for_choice(choice)
           print "\n"
         end
       end
