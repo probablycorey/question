@@ -40,21 +40,25 @@ module Question
 
     def render
       TTY.clear
-      print "? ".colorize(:cyan)
+      print "? ".cyan
       print @question
       print ": "
       if @finished
-        print @choices[@active_index][:label].colorize(:green)
+        print @choices[@active_index][:label].green
       else
-        print instructions.colorize(:light_white)
+        print instructions.light_black
       end
       print "\n"
 
       unless @finished
         @choices.each_with_index do |choice, index|
-          print index == @active_index ? TTY::UI::SELECTED : TTY::UI::UNSELECTED
+          print index == @active_index ? TTY::UI::SELECTED.green : TTY::UI::UNSELECTED
           print " "
-          print choice[:label]
+          if index == @active_index
+            print choice[:label].green
+          else
+            print choice[:label]
+          end
           print "\n"
         end
       end
