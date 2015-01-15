@@ -23,7 +23,7 @@ describe Question do
 
       assert_equal result, [
         "horrible",
-        { label: "good", value: {sub: 1} }
+        {sub: 1}
       ]
     end
   end
@@ -42,7 +42,7 @@ describe Question do
         input = [Question::TTY::CODE::RETURN]
         index.times { input.unshift Question::TTY::CODE::DOWN }
         result = fake_input(input) { Question.list(message, choices) }
-        assert_equal result, choice
+        assert_equal result, choice.is_a?(Hash) ? choice[:value] : choice
       end
     end
   end

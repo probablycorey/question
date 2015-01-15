@@ -30,7 +30,7 @@ module Question
         render # render the results a final time and clear the screen
       end
 
-      @selected_choices
+      @selected_choices.map { |choice| value_for_choice(choice) }
     end
 
     def handle_input

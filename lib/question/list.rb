@@ -24,7 +24,7 @@ module Question
         render
       end
 
-      @choices[@active_index]
+      value_for_choice(@choices[@active_index])
     end
 
     def handle_input
