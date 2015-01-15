@@ -9,6 +9,14 @@ module Question
       @modified = false
     end
 
+    def label_for_choice(choice)
+      choice.is_a?(Hash) ? choice[:label] : choice
+    end
+
+    def value_for_choice(choice)
+      choice.is_a?(Hash) ? choice[:value] : choice
+    end
+
     def ask
       TTY.interactive do
         while !@finished
@@ -54,9 +62,9 @@ module Question
       print @question
       print ": "
       if @finished
-        print @selected_choices.map { |choice| choice[:label] }.join(", ").green
+        print @selected_choices.map { |choice| label_for_choice(choice) }.join(", ").green
       elsif @modified
-        print @selected_choices.map { |choice| choice[:label] }.join(", ")
+        print @selected_choices.map { |choice| label_for_choice(choice) }.join(", ")
       else
         print instructions.light_white
       end
@@ -72,7 +80,7 @@ module Question
             print TTY::UI::CHECKBOX_UNCHECKED.red
           end
           print "  "
-          print choice[:label]
+          print label_for_choice(choice)
           print "\n"
         end
       end

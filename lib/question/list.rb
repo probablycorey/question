@@ -7,6 +7,14 @@ module Question
       @finished = false
     end
 
+    def label_for_choice(choice)
+      choice.is_a?(Hash) ? choice[:label] : choice
+    end
+
+    def value_for_choice(choice)
+      choice.is_a?(Hash) ? choice[:value] : choice
+    end
+
     def ask
       TTY.interactive do
         while !@finished
@@ -44,7 +52,7 @@ module Question
       print @question
       print ": "
       if @finished
-        print @choices[@active_index][:label].green
+        print label_for_choice(@choices[@active_index]).green
       else
         print instructions.light_black
       end
@@ -55,9 +63,9 @@ module Question
           print index == @active_index ? TTY::UI::SELECTED.green : TTY::UI::UNSELECTED
           print " "
           if index == @active_index
-            print choice[:label].green
+            print label_for_choice(choice).green
           else
-            print choice[:label]
+            print label_for_choice(choice)
           end
           print "\n"
         end
