@@ -35,10 +35,10 @@ module Question
     def render
       obscured_password = TTY::UI::SECURE * @answer.length
       TTY.clear
-      print "? ".colorize(:cyan)
+      print "? ".cyan
       print @question
       print ": "
-      print @finished ? obscured_password.colorize(:blue) : obscured_password
+      print @finished ? obscured_password.blue : obscured_password
       print "\n"
     end
   end

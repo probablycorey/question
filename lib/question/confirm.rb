@@ -11,9 +11,9 @@ module Question
       print TTY::CODE::SAVE
       question = colorized_question
       if @default
-        question += "(Y/n) ".colorize(:light_white)
+        question += "(Y/n) ".light_white
       else
-        question += "(y/N) ".colorize(:light_white)
+        question += "(y/N) ".light_white
       end
 
       # Use readline so keyboard shortcuts like alt-backspace work
@@ -36,12 +36,12 @@ module Question
     def render
       TTY.clear
       print colorized_question
-      print (@answer ? "Yes" : "No").colorize(:blue)
+      print (@answer ? "Yes" : "No").blue
       print "\n"
     end
 
     def colorized_question
-      colorized_question = "? ".colorize(:cyan)
+      colorized_question = "? ".cyan
       colorized_question += @question
       colorized_question += ": "
     end

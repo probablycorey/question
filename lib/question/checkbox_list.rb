@@ -50,15 +50,15 @@ module Question
 
     def render
       TTY.clear
-      print "? ".colorize(:cyan)
+      print "? ".cyan
       print @question
       print ": "
       if @finished
-        print @selected_choices.map { |choice| choice[:label] }.join(", ").colorize(:green)
+        print @selected_choices.map { |choice| choice[:label] }.join(", ").green
       elsif @modified
         print @selected_choices.map { |choice| choice[:label] }.join(", ")
       else
-        print instructions.colorize(:light_white)
+        print instructions.light_white
       end
       print "\n"
 
@@ -67,9 +67,9 @@ module Question
           print index == @active_index ? TTY::UI::SELECTED : TTY::UI::UNSELECTED
           print " "
           if @selected_choices.include?(choice)
-            print TTY::UI::CHECKBOX_CHECKED.colorize(:green)
+            print TTY::UI::CHECKBOX_CHECKED.green
           else
-            print TTY::UI::CHECKBOX_UNCHECKED.colorize(:red)
+            print TTY::UI::CHECKBOX_UNCHECKED.red
           end
           print "  "
           print choice[:label]
