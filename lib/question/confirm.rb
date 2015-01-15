@@ -36,7 +36,7 @@ module Question
     def render
       TTY.clear
       print colorized_question
-      print (@answer ? "Yes" : "No").blue
+      print (@answer ? "Yes" : "No").green
       print "\n"
     end
 

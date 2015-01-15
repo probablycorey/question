@@ -38,7 +38,7 @@ module Question
       print "? ".cyan
       print @question
       print ": "
-      print @finished ? obscured_password.blue : obscured_password
+      print @finished ? obscured_password.green : obscured_password
       print "\n"
     end
   end

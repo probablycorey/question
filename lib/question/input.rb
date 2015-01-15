@@ -25,7 +25,7 @@ module Question
     def render
       TTY.clear
       print colorized_question
-      print @answer.blue
+      print @answer.green
       print "\n"
     end
 
