@@ -13,7 +13,7 @@ module Question
           render
           handle_input
         end
-        render # render the results a final time and clear the screen
+        render
       end
 
       @choices[@active_index]
@@ -35,7 +35,7 @@ module Question
     end
 
     def instructions
-      "(Press <enter> when to make selection)"
+      "(Press <enter> to select item)"
     end
 
     def render
