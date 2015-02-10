@@ -88,6 +88,7 @@ module Question
           print label_for_choice(choice)
           print "\n"
         end
+        print TTY::CODE::NOOP
       end
     end
   end

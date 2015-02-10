@@ -69,7 +69,9 @@ module Question
           end
           print "\n"
         end
+        print TTY::CODE::NOOP
       end
+
     end
   end
 end

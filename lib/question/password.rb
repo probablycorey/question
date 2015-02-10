@@ -40,6 +40,7 @@ module Question
       print ": "
       print @finished ? obscured_password.green : obscured_password
       print "\n"
+      print TTY::CODE::NOOP unless @finished
     end
   end
 end

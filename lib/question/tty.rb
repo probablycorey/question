@@ -24,6 +24,8 @@ module Question
       CLEAR_DOWN = "\e[0J"
       SAVE = "\e7"
       RESTORE = "\e8"
+
+      NOOP = "\e[0n" # Used in tests to determine if a question requires input.
     end
 
     module UI

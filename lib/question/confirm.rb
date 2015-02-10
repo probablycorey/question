@@ -17,7 +17,7 @@ module Question
       end
 
       # Use readline so keyboard shortcuts like alt-backspace work
-      @answer = Readline.readline(question, true)
+      @answer = Readline.readline(question + TTY::CODE::NOOP, true)
       @answer = if @answer =~ /^y/i
         true
       elsif @answer =~ /^n/i
