@@ -12,7 +12,7 @@ module Question
       question = colorized_question
       question += "(#{@default}) ".light_white if @default
 
-      # Use readline so keyboard shortcuts like alt-backspace work
+      # Use Readline so keyboard shortcuts like alt-backspace work
       @answer = Readline.readline(question + TTY::CODE::NOOP, true)
       @answer = @default if @default && @answer.length == 0
 

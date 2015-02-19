@@ -29,7 +29,7 @@ module Question
 
     def handle_input
       case TTY.input
-      when TTY::CODE::SIGINT
+      when TTY::CODE::SIGINT, TTY::CODE::ESCAPE
         exit 130
       when TTY::CODE::RETURN, TTY::CODE::SPACE
         @finished = true
