@@ -22,13 +22,13 @@ module Question
     end
 
     def ask
-      TTY.interactive do
-        while !@finished
+      while !@finished
+        TTY.interactive do
           render
           handle_input
         end
-        render # render the results a final time and clear the screen
       end
+      render # render the results a final time
 
       @selected_choices.map { |choice| value_for_choice(choice) }
     end
@@ -36,7 +36,7 @@ module Question
     def handle_input
       input = TTY.input
       case input
-      when TTY::CODE::SIGINT
+      when TTY::CODE::SIGINT, TTY::CODE::ESCAPE
         exit 130
       when TTY::CODE::RETURN
         @finished = true
@@ -62,7 +62,6 @@ module Question
     end
 
     def render
-      TTY.clear
       print "? ".cyan
       print @question
       print ": "

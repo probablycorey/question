@@ -8,35 +8,45 @@ module Question
     end
 
     def ask
-      print TTY::CODE::SAVE
-      question = colorized_question
-      if @default
-        question += "(Y/n) ".light_white
-      else
-        question += "(y/N) ".light_white
-      end
-
-      # Use readline so keyboard shortcuts like alt-backspace work
-      @answer = Readline.readline(question + TTY::CODE::NOOP, true)
-      @answer = if @answer =~ /^y/i
-        true
-      elsif @answer =~ /^n/i
-        false
-      else
-        @default
+      while @answer.nil?
+        TTY.interactive do
+          render
+          handle_input
+        end
       end
 
       render
 
       @answer
-    rescue Interrupt
-      exit 1
+    end
+
+    def handle_input
+      case TTY.input
+      when TTY::CODE::SIGINT, TTY::CODE::ESCAPE
+        exit 130
+      when TTY::CODE::RETURN
+        @answer = @default
+      when /y/i
+        @answer = true
+      when /n/i
+        @answer = false
+      else
+        print TTY::CODE::BEEP
+      end
     end
 
     def render
-      TTY.clear
-      print colorized_question
-      print (@answer ? "Yes" : "No").green
+      print "? ".colorize(:cyan)
+      print @question
+      print ": "
+      if @answer.nil?
+        default_message = @default ? "(Y/n) " : "(y/N) "
+        print default_message.colorize(:light_white)
+      else
+        answer_message = @answer ? "Yes" : "No"
+        print answer_message.colorize(:blue)
+      end
+
       print "\n"
     end
 

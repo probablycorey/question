@@ -5,13 +5,13 @@ require "timeout"
 
 require "colorize"
 
-require "question/version"
-require "question/tty"
-require "question/checkbox_list"
-require "question/list"
-require "question/input"
-require "question/password"
-require "question/confirm"
+require_relative "./question/version"
+require_relative "./question/tty"
+require_relative "./question/checkbox_list"
+require_relative "./question/list"
+require_relative "./question/input"
+require_relative "./question/password"
+require_relative "./question/confirm"
 
 module Question
   def self.checkbox_list(*args)

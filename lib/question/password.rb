@@ -8,8 +8,8 @@ module Question
     end
 
     def ask
-      TTY.interactive do
-        while !@finished
+      while !@finished
+        TTY.interactive do
           render
           handle_input
         end
@@ -21,7 +21,7 @@ module Question
 
     def handle_input
       case input = TTY.input
-      when TTY::CODE::SIGINT
+      when TTY::CODE::SIGINT, TTY::CODE::ESCAPE
         exit 130
       when TTY::CODE::RETURN
         @finished = true
@@ -34,7 +34,6 @@ module Question
 
     def render
       obscured_password = TTY::UI::SECURE * @answer.length
-      TTY.clear
       print "? ".cyan
       print @question
       print ": "

@@ -6,6 +6,7 @@ module Question
       RETURN = "\r"
       LINEFEED = "\n"
       ESCAPE = "\e"
+      BEEP = "\a"
       UP = "\e[A"
       DOWN = "\e[B"
       RIGHT = "\e[C"
@@ -45,13 +46,10 @@ module Question
         block.call
       ensure
         print TTY::CODE::SHOW
+        print TTY::CODE::RESTORE
+        print TTY::CODE::CLEAR_DOWN
         $stdout.sync = sync_value
       end
-    end
-
-    def self.clear
-      print TTY::CODE::RESTORE
-      print TTY::CODE::CLEAR_DOWN
     end
 
     def self.input
