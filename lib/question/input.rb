@@ -16,10 +16,14 @@ module Question
       @answer = Readline.readline(question + TTY::CODE::NOOP, true)
       @answer = @default if @default && @answer.length == 0
 
-      render
       @answer
     rescue Interrupt
       exit 1
+    ensure
+      print TTY::CODE::RESTORE
+      print TTY::CODE::CLEAR_DOWN
+
+      render
     end
 
     def render
