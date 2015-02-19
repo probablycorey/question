@@ -1,6 +1,6 @@
 require "pp"
 
-require "question"
+require_relative "../lib/question"
 
 choices = [
   { label: "red", value: {r: 255, g: 0, b: 0} },
