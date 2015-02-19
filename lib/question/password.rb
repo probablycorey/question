@@ -8,8 +8,8 @@ module Question
     end
 
     def ask
-      TTY.interactive do
-        while !@finished
+      while !@finished
+        TTY.interactive do
           render
           handle_input
         end
@@ -34,7 +34,6 @@ module Question
 
     def render
       obscured_password = TTY::UI::SECURE * @answer.length
-      TTY.clear
       print "? ".colorize(:cyan)
       print @question
       print ": "

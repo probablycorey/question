@@ -8,13 +8,13 @@ module Question
     end
 
     def ask
-      TTY.interactive do
-        while !@finished
+      while !@finished
+        TTY.interactive do
           render
           handle_input
         end
-        render # render the results a final time and clear the screen
       end
+      render # render the results a final time
 
       @choices[@active_index]
     end
@@ -39,7 +39,6 @@ module Question
     end
 
     def render
-      TTY.clear
       print "? ".colorize(:cyan)
       print @question
       print ": "

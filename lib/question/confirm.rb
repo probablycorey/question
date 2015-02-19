@@ -34,7 +34,6 @@ module Question
     end
 
     def render
-      TTY.clear
       print colorized_question
       print (@answer ? "Yes" : "No").colorize(:blue)
       print "\n"

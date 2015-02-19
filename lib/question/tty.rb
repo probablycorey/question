@@ -38,13 +38,10 @@ module Question
         block.call
       ensure
         print TTY::CODE::SHOW
+        print TTY::CODE::RESTORE
+        print TTY::CODE::CLEAR_DOWN
         $stdout.sync = sync_value
       end
-    end
-
-    def self.clear
-      print TTY::CODE::RESTORE
-      print TTY::CODE::CLEAR_DOWN
     end
 
     def self.input
