@@ -13,13 +13,20 @@ module Question
       LEFT = "\e[D"
       BACKSPACE = "\b"
       DELETE = "\e[3"
-      SIGINT = "\003"
+
+      CTRL_J = "\x0A"
+      CTRL_N = "\x0E"
+      CTRL_K = "\x0B"
+      CTRL_P = "\x10"
+      SIGINT = "\x03"
 
       HIDE = "\e[?25l"
       SHOW = "\e[?25h"
       CLEAR_DOWN = "\e[0J"
       SAVE = "\e7"
       RESTORE = "\e8"
+
+      NOOP = "\e[0n" # Used in tests to determine if a question requires input.
     end
 
     module UI

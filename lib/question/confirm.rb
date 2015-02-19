@@ -51,7 +51,7 @@ module Question
     end
 
     def colorized_question
-      colorized_question = "? ".colorize(:cyan)
+      colorized_question = "? ".cyan
       colorized_question += @question
       colorized_question += ": "
     end

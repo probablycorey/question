@@ -7,6 +7,14 @@ module Question
       @finished = false
     end
 
+    def label_for_choice(choice)
+      choice.is_a?(Hash) ? choice[:label] : choice
+    end
+
+    def value_for_choice(choice)
+      choice.is_a?(Hash) ? choice[:value] : choice
+    end
+
     def ask
       while !@finished
         TTY.interactive do
@@ -16,7 +24,7 @@ module Question
       end
       render # render the results a final time
 
-      @choices[@active_index]
+      value_for_choice(@choices[@active_index])
     end
 
     def handle_input
@@ -25,38 +33,44 @@ module Question
         exit 130
       when TTY::CODE::RETURN, TTY::CODE::SPACE
         @finished = true
-      when TTY::CODE::DOWN
+      when TTY::CODE::DOWN, TTY::CODE::CTRL_J, TTY::CODE::CTRL_N
         @active_index += 1
         @active_index = 0 if @active_index >= @choices.length
-      when TTY::CODE::UP
+      when TTY::CODE::UP, TTY::CODE::CTRL_K, TTY::CODE::CTRL_P
         @active_index -= 1
         @active_index = @choices.length - 1 if @active_index < 0
       end
     end
 
     def instructions
-      "(Press <enter> when to make selection)"
+      "(Press <enter> to select item)"
     end
 
     def render
-      print "? ".colorize(:cyan)
+      print "? ".cyan
       print @question
       print ": "
       if @finished
-        print @choices[@active_index][:label].colorize(:green)
+        print label_for_choice(@choices[@active_index]).green
       else
-        print instructions.colorize(:light_white)
+        print instructions.light_black
       end
       print "\n"
 
       unless @finished
         @choices.each_with_index do |choice, index|
-          print index == @active_index ? TTY::UI::SELECTED : TTY::UI::UNSELECTED
+          print index == @active_index ? TTY::UI::SELECTED.green : TTY::UI::UNSELECTED
           print " "
-          print choice[:label]
+          if index == @active_index
+            print label_for_choice(choice).green
+          else
+            print label_for_choice(choice)
+          end
           print "\n"
         end
+        print TTY::CODE::NOOP
       end
+
     end
   end
 end

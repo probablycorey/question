@@ -14,4 +14,23 @@ require_relative "./question/password"
 require_relative "./question/confirm"
 
 module Question
+  def self.checkbox_list(*args)
+    CheckboxList.new(*args).ask
+  end
+
+  def self.list(*args)
+    List.new(*args).ask
+  end
+
+  def self.input(*args)
+    Input.new(*args).ask
+  end
+
+  def self.password(*args)
+    Password.new(*args).ask
+  end
+
+  def self.confirm(*args)
+    Confirm.new(*args).ask
+  end
 end
